@@ -1,0 +1,19 @@
+.checkbox-text {
+  margin: 0;
+}
+
+.checkbox-text label {
+  font-weight: 700;
+}
+
+.checkbox-text input {
+  position: relative !important;
+}
+
+.inlineIcon {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  width: 22px !important;
+}
+

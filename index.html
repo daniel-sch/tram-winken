@@ -4,6 +4,7 @@
   <title>Tram winken</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <link rel="stylesheet" href="tram-winken.css">
   <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 </head>
@@ -12,16 +13,97 @@
   <div data-role="page">
     <div data-role="header">
       <h1>Tram winken</h1>
+      <a href="#addDialog" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-left">Add</a>
     </div>
 
     <div data-role="main" class="ui-content">
-      <p>Page content</p>
+      <table data-role="table" data-mode="columntoggle" class="ui-responsive">
+        <thead>
+          <tr>
+            <th data-priority="1">Time</th>
+            <th>Number</th>
+            <th data-priority="5">Line</th>
+            <th data-priority="5">Direction</th>
+            <th>Reaction</th>
+            <th data-priority="2">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>22:10</td>
+            <td>404</td>
+            <td>12</td>
+            <td><span class="ui-icon-arrow-r ui-btn-icon-notext inlineIcon"></span></td>
+            <td>keine Reaktion</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div data-role="footer">
       <h1>Footer Text</h1>
     </div>
   </div> 
+
+  <div data-role="popup" data-dialog="true" id="addDialog">
+    <div data-role="header">
+      <h1>Add new event</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+      <form method="post" action"#">
+        <label for="time">Time:</label>
+        <input type="time" name="time" id="time">
+
+        <label for="number">Tram number:</label>
+        <input type="number" name="number" id="number">
+
+        <label for="line">Tram line:</label>
+        <input type="number" name="line" id="line">
+
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Direction:</legend>
+          <label for="ltr"><span class="ui-icon-arrow-r ui-btn-icon-notext"></span></label>
+          <input type="radio" name="direction" id="ltr" value="ltr">
+          <label for="rtl"><span class="ui-icon-arrow-l ui-btn-icon-notext"></span></label>
+          <input type="radio" name="direction" id="rtl" value="rtl">
+        </fieldset>
+
+        <fieldset data-role="controlgroup">
+          <legend>Reaction:</legend>
+          <label for="waving">Waving</label>
+          <input type="checkbox" name="reaction" id="waving" value="waving">
+          <label for="ringing">Ringing</label>
+          <input type="checkbox" name="reaction" id="ringing" value="ringing">
+          <label for="intLights">Interior lights</label>
+          <input type="checkbox" name="reaction" id="intLights" value="intLights">
+          <label for="headlight">Headlight</label>
+          <input type="checkbox" name="reaction" id="headlight" value="headlight">
+          <label for="blinkers">Blinkers</label>
+          <input type="checkbox" name="reaction" id="blinkers" value="blinkers">
+          <label for="loudspeaker">
+            <div class="ui-field-contain checkbox-text">
+              <label for="loudspeakerText">Loudspeaker:</label>
+              <input type="text" name="loudspeakerText" id="loudspeakerText">
+            </div>
+          </label>
+          <input type="checkbox" name="reaction" id="loudspeaker" value="loudspeaker">
+          <label for="other">
+            <div class="ui-field-contain checkbox-text">
+              <label for="otherText">Other:</label>
+              <input type="text" name="otherText" id="otherText">
+            </div>
+          <input type="checkbox" name="reaction" id="other" value="other">
+        </fieldset>
+
+        <label for="notes">Notes:</label>
+        <input type="text" name="notes" id="notes">
+
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
 
 </body>
 </html>
