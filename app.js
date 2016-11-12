@@ -3,13 +3,15 @@ onError = function(error, statement) {
 }
 
 deleteEvent = function(id) {
-  html5sql.process([{
-    'sql': 'DELETE FROM events WHERE id=?',
-    'data': [id],
-    'success': function(){
-      $('#row-'+id).remove();
-    }
-  }], function(){}, onError);
+  if(confirm('Are you want to delete this entry?')) {
+    html5sql.process([{
+      'sql': 'DELETE FROM events WHERE id=?',
+      'data': [id],
+      'success': function(){
+        $('#row-'+id).remove();
+      }
+    }], function(){}, onError);
+  }
 }
 
 fillTable = function(transaction, results, rowArray) {
@@ -52,6 +54,17 @@ reloadTable = function() {
   html5sql.process('SELECT * FROM events', fillTable, onError);
 }
 
+initDatabase = function() {
+  html5sql.process('CREATE TABLE IF NOT EXISTS events(id INTEGER NOT NULL, time DATETIME, number INTEGER, line INTEGER, direction VARCHAR(3), waving BOOLEAN, ringing BOOLEAN, intLights BOOLEAN, headlight BOOLEAN, blinkers BOOLEAN, loudspeakerText VARCHAR(256), otherText VARCHAR(256), notes VARCHAR(256), PRIMARY KEY(id));', function(){}, onError);
+}
+
+resetDatabase = function() {
+  if(confirm('Are you want to delete everything?')) {
+    html5sql.process('DROP TABLE events', initDatabase, onError);
+    $('#dataTable tbody').empty();
+  }
+}
+
 $(document).on('pagecreate', function() {
   if(!html5sql.database) {
     html5sql.openDatabase('com.tram-winken.appdb', 'App Data', 1024*1024);
@@ -60,7 +73,7 @@ $(document).on('pagecreate', function() {
     html5sql.logErrors = true;
     html5sql.putSelectResultsInArray = true;
 
-    html5sql.process('CREATE TABLE IF NOT EXISTS events(id INTEGER NOT NULL, time DATETIME, number INTEGER, line INTEGER, direction VARCHAR(3), waving BOOLEAN, ringing BOOLEAN, intLights BOOLEAN, headlight BOOLEAN, blinkers BOOLEAN, loudspeakerText VARCHAR(256), otherText VARCHAR(256), notes VARCHAR(256), PRIMARY KEY(id));', function(){}, onError);
+    initDatabase();
   }
 
   reloadTable();
