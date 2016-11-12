@@ -14,33 +14,37 @@ deleteEvent = function(id) {
   }
 }
 
+createReactionString = function(value) {
+  var reaction = [];
+  if(value.waving == "true")
+    reaction.push('Waving');
+  if(value.ringing == "true")
+    reaction.push('Ringing');
+  if(value.intLights == "true")
+    reaction.push('Interior lights');
+  if(value.headlight == "true")
+    reaction.push('Headlight');
+  if(value.blinkers == "true")
+    reaction.push('Blinkers');
+  if(value.loudspeakerText != '')
+    reaction.push('Loudspeaker ("' + value.loudspeakerText + '")');
+  if(value.otherText != '')
+    reaction.push(value.otherText);
+  if(reaction.length == 0)
+    reaction.push('No Reaction');
+
+  return reaction.join(', ');
+}
+
 fillTable = function(transaction, results, rowArray) {
   var html = '';
   $.each(rowArray, function(index, value) {
-    var reaction = [];
-    if(value.waving == "true")
-      reaction.push('Waving');
-    if(value.ringing == "true")
-      reaction.push('Ringing');
-    if(value.intLights == "true")
-      reaction.push('Interior lights');
-    if(value.headlight == "true")
-      reaction.push('Headlight');
-    if(value.blinkers == "true")
-      reaction.push('Blinkers');
-    if(value.loudspeakerText != '')
-      reaction.push('Loudspeaker ("' + value.loudspeakerText + '")');
-    if(value.otherText != '')
-      reaction.push(value.otherText);
-    if(reaction.length == 0)
-      reaction.push('No Reaction');
-
     html += '<tr id="row-' + value.id + '">' +
       '<td>' + value.time + '</td>' +
-      '<td>' + value.number + '</td>' +
+      '<td><a href="javascript:showHistory(' + value.number + ')">' + value.number + '</a></td>' +
       '<td>' + value.line + '</td>' +
       '<td><span class="ui-icon-arrow-' + (value.direction == 'ltr' ? 'r':'l') + ' ui-btn-icon-notext inlineIcon"></span></td>' +
-      '<td>' + reaction.join(', ') + '</td>' +
+      '<td>' + createReactionString(value) + '</td>' +
       '<td>' + value.notes + '</td>' +
       '<td><a href="javascript:deleteEvent('+value.id+');" data-rolw="button" class="ui-btn ui-icon-delete ui-btn-icon-notext">Delete</a></td>' +
       '</tr>';
@@ -63,6 +67,25 @@ resetDatabase = function() {
     html5sql.process('DROP TABLE events', initDatabase, onError);
     $('#dataTable tbody').empty();
   }
+}
+
+fillHistory = function(transaction, results, rowArray) {
+  var html = '';
+  $.each(rowArray, function(index, value) {
+    html += '<li>' + value.time + ': ' + createReactionString(value) + '</li>';
+  });
+  $('#historyList').append(html);
+}
+
+showHistory = function(number) {
+  $.mobile.changePage('#historyDialog');
+
+  $('#historyList').empty();
+  html5sql.process([{
+    'sql': 'SELECT * FROM events WHERE number=?',
+    'data': [number],
+    'success': fillHistory
+  }], function(){}, onError);
 }
 
 $(document).on('pagecreate', function() {
