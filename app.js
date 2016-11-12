@@ -89,6 +89,11 @@ showHistory = function(number) {
 }
 
 $(document).on('pagecreate', function() {
+  if(typeof openDatabase === 'undefined') {
+    alert('App is compatible only to browsers that implement Web SQL (e.g. Chrome)');
+    return;
+  }
+
   if(!html5sql.database) {
     html5sql.openDatabase('com.tram-winken.appdb', 'App Data', 1024*1024);
 
