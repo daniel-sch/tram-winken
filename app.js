@@ -86,6 +86,27 @@ $(document).on('pagecreate', function() {
         $('#otherText').parent().toggle($(this).is(':checked'));
       });
 
+      $('#number').on('keyup change paste click', function() {
+        html5sql.process([{
+          'sql': 'SELECT * FROM events WHERE number=? ORDER BY id DESC LIMIT 1',
+          'data': [$('#number').val()],
+          'success': function(transaction, results, rowArray) {
+            if(rowArray.length > 0)
+            {
+              $('#line').val(rowArray[0].line);
+              if(rowArray[0].direction == 'rtl') {
+                $('#ltr').prop('checked', true);
+                $('#rtl').prop('checked', false);
+              }
+              else {
+                $('#rtl').prop('checked', true);
+                $('#ltr').prop('checked', false);
+              }
+              $('input[type="radio"]').checkboxradio('refresh');
+            }
+          }}], function(){}, onError);
+      });
+
       $('#submit').unbind('click').click(function(event) {
         var time = $('#time').val();
         var number = $('#number').val();
