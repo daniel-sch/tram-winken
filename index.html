@@ -2,11 +2,14 @@
 <html>
 <head>
   <title>Tram winken</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
   <link rel="stylesheet" href="tram-winken.css">
   <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="html5sql.js"></script>
+  <script src="app.js"></script>
 </head>
 <body>
 
@@ -17,7 +20,7 @@
     </div>
 
     <div data-role="main" class="ui-content">
-      <table data-role="table" data-mode="columntoggle" class="ui-responsive">
+      <table id="dataTable" data-role="table" data-mode="columntoggle" class="ui-responsive">
         <thead>
           <tr>
             <th data-priority="1">Time</th>
@@ -26,6 +29,7 @@
             <th data-priority="5">Direction</th>
             <th>Reaction</th>
             <th data-priority="2">Notes</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -36,14 +40,15 @@
             <td><span class="ui-icon-arrow-r ui-btn-icon-notext inlineIcon"></span></td>
             <td>keine Reaktion</td>
             <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div data-role="footer">
+    <!-- <div data-role="footer">
       <h1>Footer Text</h1>
-    </div>
+    </div> -->
   </div> 
 
   <div data-role="popup" data-dialog="true" id="addDialog">
@@ -52,7 +57,7 @@
     </div>
 
     <div data-role="main" class="ui-content">
-      <form method="post" action"#">
+      <form id="eventForm" method="post" action"#">
         <label for="time">Time:</label>
         <input type="time" name="time" id="time">
 
@@ -65,7 +70,7 @@
         <fieldset data-role="controlgroup" data-type="horizontal">
           <legend>Direction:</legend>
           <label for="ltr"><span class="ui-icon-arrow-r ui-btn-icon-notext"></span></label>
-          <input type="radio" name="direction" id="ltr" value="ltr">
+          <input type="radio" name="direction" id="ltr" value="ltr" checked="checked">
           <label for="rtl"><span class="ui-icon-arrow-l ui-btn-icon-notext"></span></label>
           <input type="radio" name="direction" id="rtl" value="rtl">
         </fieldset>
@@ -100,7 +105,7 @@
         <label for="notes">Notes:</label>
         <input type="text" name="notes" id="notes">
 
-        <input type="submit" value="Submit">
+        <a href="#" id="submit" data-rel="back" data-role="button">Submit</a>
       </form>
     </div>
   </div>
